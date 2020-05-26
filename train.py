@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+import tensorflow as tf
 import numpy as np
 import librosa
 from sklearn import preprocessing
@@ -49,10 +50,14 @@ model.compile(
     loss='sparse_categorical_crossentropy',
     metrics=["accuracy"],
 )
+# save model image
+tf.keras.utils.plot_model(model, to_file='model/architecture.png')
+
 
 model.fit(
-    x, y,
+    [x, x],
+    y,
     batch_size=32,
-    epochs=200,
+    epochs=50,
 )
 
