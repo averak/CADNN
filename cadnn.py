@@ -14,10 +14,11 @@ def build_model(n_class, n_context):
 
     # 入力層
     main_input = Input(shape=(32,))
-    sub_input = Input(shape=(32,))
+    sub_input = Input(shape=(20,))
 
     # サブネットワーク
     sub_x = Dense(32, activation='relu')(sub_input)
+    sub_x = Dropout(0.5)(sub_x)
     sub_y1 = Dense(1, activation='relu')(sub_x)
     sub_y2 = Dense(1, activation='relu')(sub_x)
 
@@ -29,7 +30,9 @@ def build_model(n_class, n_context):
     main_x2_2 = Multiply()([main_x2_2, sub_y2])
     main_x2 = Add()([main_x2_1, main_x2_2])
     main_x3 = Dense(64, activation='relu')(main_x2)
+    main_x3 = Dropout(0.5)(main_x3)
     main_x4 = Dense(64, activation='relu')(main_x3)
+    main_x4 = Dropout(0.5)(main_x4)
     main_y = Dense(n_class, activation='softmax')(main_x4)
 
     model = Model(inputs=[main_input, sub_input], outputs=main_y)
