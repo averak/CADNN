@@ -24,12 +24,12 @@ def feature_extract():
         # 音声読み込み
         wav, fs = librosa.load(f, sr=8000)
         # mfccをコンテキストの特徴量とする
-        context_feature = librosa.feature.mfcc(wav, sr=fs, hop_length=10**8, htk=True)
+        context_feature = librosa.feature.mfcc(wav, sr=fs, hop_length=10**6, htk=True).T[0]
 
         mfcc = librosa.feature.mfcc(wav, sr=fs, n_mfcc=32).T
         for frame in mfcc:
             x1.append(preprocessing.minmax_scale(frame))
-            x2.append(context_feature.reshape((20)))
+            x2.append(context_feature)
             y.append(classes.index(f.split('/')[-2]))
 
     x1 = np.array(x1)
@@ -60,11 +60,13 @@ model.compile(
 # save model image
 tf.keras.utils.plot_model(model, to_file='model/architecture.png')
 
-
+# train
 model.fit(
     [x1, x2],
     y,
     batch_size=32,
-    epochs=200,
+    epochs=50,
 )
+
+model.save_weights('model/model.h5')
 
