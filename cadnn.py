@@ -1,4 +1,3 @@
-#!/usr/bin/env python
 from tensorflow.keras.models import Model
 from tensorflow.keras.layers import Input, Dense, Dropout
 
@@ -29,13 +28,4 @@ def build_model(n_class, n_context):
     # モデル
     model = Model(inputs=main_input, outputs=y)
     return model
-
-
-if __name__ == '__main__':
-    model = build_model(5, 2)
-    model.compile(
-        optimizer='adam',
-        loss='sparse_categorical_crossentropy',
-        metrics=["accuracy"],
-    )
 
