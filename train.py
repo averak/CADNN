@@ -14,7 +14,8 @@ def feature_extract():
     #--------------------------------------------
 
     files = glob.glob('data/context1/*/*.wav')
-    classes = list(set([f.split('/')[-2] for f in files]))
+    #classes = list(set([f.split('/')[-2] for f in files]))
+    classes = ['a', 'i', 'u', 'e', 'o']
 
     x1 = []
     x2 = []
@@ -65,7 +66,7 @@ model.fit(
     [x1, x2],
     y,
     batch_size=32,
-    epochs=50,
+    epochs=100,
 )
 
 model.save_weights('model/model.h5')

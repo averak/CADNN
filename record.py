@@ -101,36 +101,37 @@ class Recording(object):
 
 
 
-record = Recording()
+if __name__ == '__main__':
+    record = Recording()
 
-context = input('コンテキスト(1 or 2)：')
-save_dir = 'data/context' + context + '/'
-target = input('ターゲット音：')
+    context = input('コンテキスト(1 or 2)：')
+    save_dir = 'data/context' + context + '/'
+    target = input('ターゲット音：')
 
-os.makedirs(save_dir + target)
+    os.makedirs(save_dir + target)
 
-os.system('clear')
-print('*** ENTERを押して録音開始・終了 ***')
+    os.system('clear')
+    print('*** ENTERを押して録音開始・終了 ***')
 
-mode = 0  # 0：録音開始，1：録音終了
-cnt = 1
+    mode = 0  # 0：録音開始，1：録音終了
+    cnt = 1
 
-while True:
-    key = input()
+    while True:
+        key = input()
 
-    if mode == 0:
-        # 録音開始
-        print('===== {0} START ==============='.format(cnt))
-        record.record_start.set()
-        record.record_end.clear()
-        mode = 1
+        if mode == 0:
+            # 録音開始
+            print('===== {0} START ==============='.format(cnt))
+            record.record_start.set()
+            record.record_end.clear()
+            mode = 1
 
-    else:
-        # 録音終了
-        print('===== END ===============')
-        record.file = '%s%s/%d.wav' % (save_dir, target, cnt)
-        record.record_start.clear()
-        while not record.record_end.is_set():
-            pass
-        mode = 0
-        cnt += 1
+        else:
+            # 録音終了
+            print('===== END ===============')
+            record.file = '%s%s/%d.wav' % (save_dir, target, cnt)
+            record.record_start.clear()
+            while not record.record_end.is_set():
+                pass
+            mode = 0
+            cnt += 1
