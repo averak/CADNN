@@ -40,7 +40,6 @@ def feature_extract():
 
 # 特徴量抽出
 x, y = feature_extract()
-print(x)
 
 # クラス -> [a, i, u, e, o]
 # コンテキスト -> [man, woman]
@@ -49,5 +48,11 @@ model.compile(
     optimizer='adam',
     loss='sparse_categorical_crossentropy',
     metrics=["accuracy"],
+)
+
+model.fit(
+    x, y,
+    batch_size=32,
+    epochs=200,
 )
 
