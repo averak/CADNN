@@ -88,8 +88,7 @@ class Recording(object):
         wav.setframerate(self.settings['rate'])
 
         # 音声データをファイルに書き込み
-        for data in [self.audio['past'], self.audio['main']]:
-            wav.writeframes(b''.join(data))
+        wav.writeframes(b''.join(self.audio['main']))
         wav.close()
 
         # 音声データの初期化
@@ -104,12 +103,17 @@ class Recording(object):
 
 record = Recording()
 
+context = input('コンテキスト(1 or 2)：')
+save_dir = 'data/context' + context + '/'
+target = input('ターゲット音：')
+
+os.makedirs(save_dir + target)
+
 os.system('clear')
 print('*** ENTERを押して録音開始・終了 ***')
 
 mode = 0  # 0：録音開始，1：録音終了
 cnt = 1
-save_dir = 'data/context1/'
 
 while True:
     key = input()
@@ -124,7 +128,7 @@ while True:
     else:
         # 録音終了
         print('===== END ===============')
-        record.file = save_dir + str(cnt) + '.wav'
+        record.file = '%s%s/%d.wav' % (save_dir, target, cnt)
         record.record_start.clear()
         while not record.record_end.is_set():
             pass
