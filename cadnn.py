@@ -9,6 +9,9 @@ def build_model(n_class, n_context):
     # params:
     #   - n_class:int -> 分類するクラス数
     #   - n_context:int -> コンテキスト数
+    # return:
+    #   - tensorflow.python.keras.engine.training.Model
+    #--------------------------------------------
 
     # メインネットワークの入力層
     main_input = Input(shape=(32,))
@@ -28,4 +31,11 @@ def build_model(n_class, n_context):
     return model
 
 
-model = build_model(5, 2)
+if __name__ == '__main__':
+    model = build_model(5, 2)
+    model.compile(
+        optimizer='adam',
+        loss='sparse_categorical_crossentropy',
+        metrics=["accuracy"],
+    )
+
