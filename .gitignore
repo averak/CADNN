@@ -37,8 +37,10 @@
 # log & temp files
 #---------------------------
 /tmp/*
+/model/*
 /data/*/*
 !/tmp/.keep
+!/model/.keep
 !/data/*/.keep
 #---------------------------
 
