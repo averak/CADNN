@@ -16,31 +16,38 @@ def feature_extract():
     files = glob.glob('data/context1/*/*.wav')
     classes = list(set([f.split('/')[-2] for f in files]))
 
-    x = []
+    x1 = []
+    x2 = []
     y = []
 
     for f in files:
+        # 音声読み込み
         wav, fs = librosa.load(f, sr=8000)
-        mfcc = librosa.feature.mfcc(wav, sr=fs, n_mfcc=32).T
+        # mfccをコンテキストの特徴量とする
+        context_feature = librosa.feature.mfcc(wav, sr=fs, hop_length=10**8, htk=True)
 
+        mfcc = librosa.feature.mfcc(wav, sr=fs, n_mfcc=32).T
         for frame in mfcc:
-            x.append(preprocessing.minmax_scale(frame))
+            x1.append(preprocessing.minmax_scale(frame))
+            x2.append(context_feature.reshape((20)))
             y.append(classes.index(f.split('/')[-2]))
 
-    x = np.array(x)
+    x1 = np.array(x1)
+    x2 = np.array(x2)
     y = np.array(y)
 
     # ランダムに並べ替え
-    perm = np.arange(len(x))
+    perm = np.arange(len(x1))
     np.random.shuffle(perm)
-    x = x[perm]
+    x1 = x1[perm]
+    x2 = x2[perm]
     y = y[perm]
 
-    return x, y
+    return x1, x2, y
 
 
 # 特徴量抽出
-x, y = feature_extract()
+x1, x2, y = feature_extract()
 
 # クラス -> [a, i, u, e, o]
 # コンテキスト -> [man, woman]
@@ -55,9 +62,9 @@ tf.keras.utils.plot_model(model, to_file='model/architecture.png')
 
 
 model.fit(
-    [x, x],
+    [x1, x2],
     y,
     batch_size=32,
-    epochs=50,
+    epochs=200,
 )
 

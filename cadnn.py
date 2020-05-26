@@ -14,7 +14,7 @@ def build_model(n_class, n_context):
 
     # 入力層
     main_input = Input(shape=(32,))
-    sub_input = Input(shape=(32,))
+    sub_input = Input(shape=(20,))
 
     # サブネットワーク
     sub_x = Dense(32, activation='relu')(sub_input)
