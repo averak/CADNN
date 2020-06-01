@@ -17,19 +17,19 @@ def build_model(n_class, n_context):
     sub_input = Input(shape=(20,))
 
     # サブネットワーク
-    sub_x = Dense(32, activation='relu')(sub_input)
+    sub_x = Dense(64, activation='relu')(sub_input)
     sub_x = Dropout(0.5)(sub_x)
     sub_y1 = Dense(1, activation='relu')(sub_x)
     sub_y2 = Dense(1, activation='relu')(sub_x)
 
     # メインネットワーク
-    main_x1 = Dense(32, activation='relu')(main_input)
-    main_x2_1 = Dense(32, activation='relu')(main_x1)
+    main_x1 = Dense(128, activation='relu')(main_input)
+    main_x2_1 = Dense(128, activation='relu')(main_x1)
     main_x2_1 = Multiply()([main_x2_1, sub_y1])
-    main_x2_2 = Dense(32, activation='relu')(main_x1)
+    main_x2_2 = Dense(128, activation='relu')(main_x1)
     main_x2_2 = Multiply()([main_x2_2, sub_y2])
     main_x2 = Add()([main_x2_1, main_x2_2])
-    main_x3 = Dense(64, activation='relu')(main_x2)
+    main_x3 = Dense(128, activation='relu')(main_x2)
     main_x3 = Dropout(0.5)(main_x3)
     main_x4 = Dense(64, activation='relu')(main_x3)
     main_x4 = Dropout(0.5)(main_x4)
